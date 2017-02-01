@@ -7,10 +7,22 @@ import java.util.Date;
  */
 
 public class ImportantTweet extends Tweet {
+
+    /**
+     * Instantiates a new Important Tweet with a date.
+     * @param date
+     * @param message
+     * @throws TweetTooLongException
+     */
     public ImportantTweet(Date date, String message) throws TweetTooLongException {
         super(date, message);
     }
 
+    /**
+     * Instantiates a new Important Tweet without a date.
+     * @param message
+     * @throws TweetTooLongException
+     */
     public ImportantTweet(String message) throws TweetTooLongException {
         super(message);
     }
@@ -19,7 +31,12 @@ public class ImportantTweet extends Tweet {
         return Boolean.TRUE;
     }
 
+    /**
+     * Alters the default getMessage function for Important Tweets.
+     * @return the altered string
+     */
     @Override
+
     public String getMessage() {
         return super.getMessage() + " !!!!";
     }
