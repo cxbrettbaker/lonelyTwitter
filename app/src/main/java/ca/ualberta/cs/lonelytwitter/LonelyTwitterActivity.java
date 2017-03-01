@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class LonelyTwitterActivity extends Activity {
+	private LonelyTwitterActivity activity = this;
 
 	private static final String FILENAME = "file.sav";
 	private EditText bodyText;
@@ -66,23 +68,33 @@ public class LonelyTwitterActivity extends Activity {
 			public void onClick(View v) {
 				setResult(RESULT_OK);
 				String filterText = bodyText.getText().toString();
-				//tweetList.clear();
-				//deleteFile(FILENAME);  // TODO deprecate this button
-
-				ElasticsearchTweetController.GetTweetsTask getTweetsTask = new ElasticsearchTweetController.GetTweetsTask();
-				getTweetsTask.execute(filterText);
-
 				tweetList.clear();
-				try {
-					tweetList.addAll(getTweetsTask.get());
-				}
-				catch (InterruptedException e){
-					e.printStackTrace();
-				}
-				catch (ExecutionException e){
-					e.printStackTrace();
-				}
+				deleteFile(FILENAME);  // TODO deprecate this button
+
+//				ElasticsearchTweetController.GetTweetsTask getTweetsTask = new ElasticsearchTweetController.GetTweetsTask();
+//				getTweetsTask.execute(filterText);
+//
+//				tweetList.clear();
+//				try {
+//					tweetList.addAll(getTweetsTask.get());
+//				}
+//				catch (InterruptedException e){
+//					e.printStackTrace();
+//				}
+//				catch (ExecutionException e){
+//					e.printStackTrace();
+//				}
 				adapter.notifyDataSetChanged();
+			}
+		});
+
+
+		oldTweetsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				Intent intent = new Intent(activity, EditTweetActivity.class);
+                String curr_tweet = tweetList.get(i).toString();
+                intent.putExtra("curr_tweet", curr_tweet);
+				startActivity(intent);
 			}
 		});
 
@@ -145,4 +157,8 @@ public class LonelyTwitterActivity extends Activity {
 			throw new RuntimeException();
 		}
 	}
+
+    public ListView getOldTweetsList() {
+        return oldTweetsList;
+    }
 }
